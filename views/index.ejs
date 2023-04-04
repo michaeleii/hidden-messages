@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Hidden Messages</title>
+</head>
+
+<body>
+	<h1>Hidden Messages</h1>
+	<% if (currentUser) { %>
+	<h2>Welcome, <%= currentUser.first_name %> <%= currentUser.last_name%>!</h2>
+	<form method="get">
+		<button formaction="/post/create">
+			Create Post
+		</button>
+		<button formaction="/auth/logout">
+			Logout
+		</button>
+	</form>
+	<% posts.forEach(post  => { %>
+	<div>
+		<h2><%= post.title %></h2>
+		<p><%= post.content %></p>
+		<% if (post.author?.vip) { %>
+		<p>By: <%= post.author.first_name %> <%= post.author.last_name %></p>
+		<% } %>
+		<p>Created: <%= post.createdAt %></p>
+		<% if (currentUser.id === post.author.id) { %>
+		<form action="/post/delete/<%= post.id %>" method="post">
+			<button>Delete</button>
+		</form>
+		<% } %>
+	</div>
+	<% }) %>
+	<% } else {%>
+	<form method="get">
+		<button formaction="/auth/register">
+			Register
+		</button>
+		<button formaction="/auth/login">
+			Login
+		</button>
+	</form>
+	<% } %>
+</body>
+
+</html>
